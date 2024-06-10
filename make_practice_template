@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 10 09:48:06 2024
+
+@author: mco77
+"""
+import matplotlib.pyplot as plt
+import math
+
+pen_size = 2.5
+angle = 30
+spec_text = f'Pen Size: {pen_size} mm, Angle = {angle}°'
+paper_height = 8.5
+paper_width = 11
+
+pen_size = pen_size / 25.4
+
+fig, ax = plt.subplots()
+fig.set_size_inches(paper_width, paper_height)
+plt.xlim(paper_width)
+plt.ylim(paper_height)
+ax.axes.set_axis_off()
+
+y = 1.5
+while y < paper_height - (pen_size*10):
+    for i in range(5):
+        if i in (0,4):
+            plt.axhline(y, c = 'gray')
+        elif i in (1,3):
+            plt.axhline(y,c = 'black')
+        if i < 4:
+            nib_ladder_left = plt.Rectangle((paper_width-pen_size, y),pen_size, pen_size, fc = 'black')
+            nib_ladder_right = plt.Rectangle((paper_width-2*pen_size, y+pen_size),pen_size, pen_size, fc = 'black')
+            plt.gca().add_patch(nib_ladder_left)
+            plt.gca().add_patch(nib_ladder_right)
+        y += pen_size * 2
+ax.text(paper_width,1,spec_text, horizontalalignment = 'left')
+ax.text(1,1,"Date: _______________", horizontalalignment = 'right')
+for i in range(3):
+    x = [paper_width - .5 - i, paper_width - 1-i]
+    y = 1.5 + 2*pen_size
+    plt.plot(x,[y +.25*math.tan(angle*math.pi/180),y-.25*math.tan(angle*math.pi/180)], c = 'black', ls = 'dashed', lw = '.5')
+plt.savefig('C:/Users/mco77/OneDrive - Rutgers University/Desktop/fig.pdf', format = 'pdf',
+            bbox_inches = 'tight',
+            pad_inches = .5,
+            orientation = 'landscape')
